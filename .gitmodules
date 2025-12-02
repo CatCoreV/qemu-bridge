@@ -1,0 +1,3 @@
+[submodule "app-compiler"]
+	path = app-compiler
+	url = https://github.com/CatCoreV/app-compiler.git
