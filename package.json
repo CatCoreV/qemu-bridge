@@ -1,0 +1,27 @@
+{
+  "name": "qemu-bridge",
+  "version": "0.0.1",
+  "description": "Bridge to use host's QEMU inside CatCore as an app. ",
+  "main": "src/index.js",
+  "scripts": {
+    "build": "node app-compiler/src/index.js build.js",
+    "test": "eslint src"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/CatCoreV/qemu-bridge.git"
+  },
+  "keywords": [],
+  "author": "topcatto",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/CatCoreV/qemu-bridge/issues"
+  },
+  "homepage": "https://github.com/CatCoreV/qemu-bridge#readme",
+  "devDependencies": {
+    "@eslint/js": "^9.39.1",
+    "eslint": "^9.39.1",
+    "globals": "^16.5.0"
+  }
+}
