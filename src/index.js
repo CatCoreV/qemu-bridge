@@ -19,7 +19,7 @@ for (var argIndex = 0; argIndex < args.length; argIndex++) {
   args2.push(arg);
   // Parse paths in arguments like -cdrom /data/test.iso
   if (["-fda", "-fdb", "-hda", "-hdb", "-hdc", "-hdd", "-cdrom", "-sd", "-bios", "-pflash", "-kernel", "-shim", "-initrd", "-dtb"].includes(arg)) {
-    var fsPath = args[argIndex + 1];
+    let fsPath = args[argIndex + 1];
     if (!await CatCore.FS.exists(fsPath)) {
       throw `${bin}: ${arg} ${fsPath}: Could not open '${fsPath}': File does not exist.`;
     }
@@ -29,7 +29,7 @@ for (var argIndex = 0; argIndex < args.length; argIndex++) {
   // Parse paths in -drive
   if (arg == "-drive") {
     var driveArgs = args[argIndex + 1];
-    var fsPath = driveArgs.match(/(?:,|^)file=(.+?)(?:,|$)/);
+    let fsPath = driveArgs.match(/(?:,|^)file=(.+?)(?:,|$)/);
     if (fsPath) {
       fsPath = fsPath[1];
       if (!await CatCore.FS.exists(fsPath)) {
