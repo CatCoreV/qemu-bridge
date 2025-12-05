@@ -76,6 +76,9 @@ if (process.platform == "win32") {
   qemuProc = child_process.spawn(`qemu-system-${type}`, args2);
 }
 
+qemuProc.stdout.on("data", console.log);
+qemuProc.stderr.on("data", console.error);
+
 // QEMU window if graphics is required
 if (!args2.includes("-nographic")) {
   var win = new CatCore.Graphics.Window;
