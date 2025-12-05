@@ -9,5 +9,5 @@ module.exports = {
   },
   "sign": true,
   "logs": true,
-  "result": "dist/qemu-system.app"
+  "result": "dist/bin/qemu-system.app"
 };

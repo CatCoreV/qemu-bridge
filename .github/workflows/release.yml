@@ -27,10 +27,16 @@ jobs:
       run: npm run build
       env:
         CATCORE_APPSIGN_KEY: ${{ secrets.CATCORE_APPSIGN_KEY }}
+    - name: Copy for every architecture
+      run: cp dist/bin/qemu-system.app dist/bin/qemu-system-{aarch64,alpha,arm,avr,cris,hppa,i386,loongarch64,m68k,microblaze,microblazeel,mips,mipsel,mips64,mips64el,or1k,ppc,ppc64,riscv32,riscv64,rx,s390x,sh4,sh4eb,sparc,sparc64,tricore,x86_64,xtensa,xtensaeb}.app
+    - name: Delete original file
+      run: rm -f dist/bin/qemu-system.app
+    - name: Package all applications into a ZIP file
+      run: cd dist && zip qemu-bridge.zip **/*
     - name: Upload binaries to release
       uses: svenstaro/upload-release-action@v2
       with:
         repo_token: ${{ github.token }}
         tag: ${{ github.event.release.tag_name }}
-        file: dist/**/*
+        file: dist/*.zip
         file_glob: true
