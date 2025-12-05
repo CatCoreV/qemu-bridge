@@ -1,5 +1,6 @@
 // Modules (this requires kernel permissions!)
 var fs = require("fs");
+var path = require("path");
 var child_process = require("node:child_process");
 
 // Get arguments and current executable filename
@@ -57,23 +58,30 @@ if (!await CatCore.FS.exists("/data/qemu.png", true)) {
   } catch {}
 }
 
+var opts = {
+  "cwd": process.cwd()
+};
+if (process.platform == "darwin") {
+  opts.cwd = path.join(process.cwd(), "..", "..", "..", "..");
+}
+
 // Start QEMU process on the host
 var qemuProc = null;
 if (process.platform == "win32") {
-  qemuProc = child_process.spawn(`qemu-system-${type}w.exe`, args2);
+  qemuProc = child_process.spawn(`qemu-system-${type}w.exe`, args2, opts);
 } else if (process.platform == "darwin") {
   // MacOS has issues with process.env.PATH, so the binary can't be found by itself
   // Instead, probe two most common paths for a normal homebrew install of QEMU
   // If both fail, at least try to launch and hope it's in process.env.PATH
   if (fs.existsSync(`/opt/homebrew/bin/qemu-system-${type}`)) {
-    qemuProc = child_process.spawn(`/opt/homebrew/bin/qemu-system-${type}`, args2);
+    qemuProc = child_process.spawn(`/opt/homebrew/bin/qemu-system-${type}`, args2, opts);
   } else if (fs.existsSync(`/usr/local/bin/qemu-system-${type}`)) {
-    qemuProc = child_process.spawn(`/usr/local/bin/qemu-system-${type}`, args2);
+    qemuProc = child_process.spawn(`/usr/local/bin/qemu-system-${type}`, args2, opts);
   } else {
-    qemuProc = child_process.spawn(`qemu-system-${type}`, args2);
+    qemuProc = child_process.spawn(`qemu-system-${type}`, args2, opts);
   }
 } else {
-  qemuProc = child_process.spawn(`qemu-system-${type}`, args2);
+  qemuProc = child_process.spawn(`qemu-system-${type}`, args2, opts);
 }
 
 qemuProc.stdout.on("data", console.log);
