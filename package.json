@@ -1,7 +1,7 @@
 {
   "name": "qemu-bridge",
-  "version": "0.0.1",
-  "description": "Bridge to use host's QEMU inside CatCore as an app. ",
+  "version": "0.0.2",
+  "description": "Bridge to use host's QEMU inside CatCore as an app.",
   "main": "src/index.js",
   "scripts": {
     "build": "node app-compiler/src/index.js build.js",

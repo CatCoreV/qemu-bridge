@@ -1,6 +1,6 @@
 // Modules (this requires kernel permissions!)
-var fs = require("fs");
-var path = require("path");
+var fs = require("node:fs");
+var path = require("node:path");
 var child_process = require("node:child_process");
 
 // Get arguments and current executable filename
@@ -24,7 +24,7 @@ for (var argIndex = 0; argIndex < args.length; argIndex++) {
     if (!await CatCore.FS.exists(fsPath)) {
       throw `${bin}: ${arg} ${fsPath}: Could not open '${fsPath}': File does not exist.`;
     }
-    args2.push(`.\\fs${fsPath.split("/").join("\\")}`);
+    args2.push(CatCore.FS.normalizePath(fsPath).slice(1));
     argIndex++;
   }
   // Parse paths in -drive
@@ -36,7 +36,7 @@ for (var argIndex = 0; argIndex < args.length; argIndex++) {
       if (!await CatCore.FS.exists(fsPath)) {
         throw `${bin}: ${arg} ${fsPath}: Could not open '${fsPath}': File does not exist.`;
       }
-      driveArgs = driveArgs.replace(fsPath, `.\\fs${fsPath.split("/").join("\\")}`);
+      driveArgs = driveArgs.replace(fsPath, CatCore.FS.normalizePath(fsPath).slice(1));
       args2.push(driveArgs);
       argIndex++;
     }
@@ -59,10 +59,10 @@ if (!await CatCore.FS.exists("/data/qemu.png", true)) {
 }
 
 var opts = {
-  "cwd": process.cwd()
+  "cwd": path.join(process.cwd(), "fs")
 };
 if (process.platform == "darwin") {
-  opts.cwd = path.join(process.cwd(), "..", "..", "..", "..");
+  opts.cwd = path.join(process.cwd(), "..", "..", "..", "..", "fs");
 }
 
 // Start QEMU process on the host
