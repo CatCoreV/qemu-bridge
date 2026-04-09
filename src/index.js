@@ -4,7 +4,7 @@ var path = require("node:path");
 var child_process = require("node:child_process");
 
 // Get arguments and current executable filename
-var args = CatCore.processArguments;
+var args = CatCore.currentProcess.args;
 var bin = CatCore.currentProcess.path.split(/\/|\\/).pop();
 
 // Check that executable filename is matching one of the architectures
