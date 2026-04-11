@@ -7,6 +7,7 @@ module.exports = {
     "name": "QEMU",
     "description": "A generic and open source machine emulator and virtualizer."
   },
+  "bundleFiles": "extra",
   "sign": true,
   "logs": true,
   "result": "dist/bin/qemu-system.app"

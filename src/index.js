@@ -51,13 +51,6 @@ if (!args2.includes("-nographic")) {
   args2.push("-vnc", ":0,websocket=6280");
 }
 
-// Download icon into /data/qemu.png, if doesn't exist
-if (!await CatCore.FS.exists("/data/qemu.png", true)) {
-  try {
-    await CatCore.FS.writeFile("/data/qemu.png", Buffer.from(await fetch("https://www.qemu.org/assets/favicons/favicon-32x32.png").then(res => res.arrayBuffer())));
-  } catch {}
-}
-
 var opts = {
   "cwd": path.join(process.cwd(), "fs")
 };
@@ -90,7 +83,7 @@ qemuProc.stderr.on("data", console.error);
 // QEMU window if graphics is required
 if (!args2.includes("-nographic")) {
   var win = new CatCore.Graphics.Window;
-  win.icon("/data/qemu.png").title("QEMU").width(720).height(450).buttons([{
+  win.icon("/app/qemu.png").title("QEMU").width(720).height(450).buttons([{
     "type": "MacOS",
     "color": "red",
     "leftClick": () => {
