@@ -86,12 +86,7 @@ if (!args2.includes("-nographic")) {
   win.icon("/app/qemu.png").title("QEMU").width(720).height(450).buttons([{
     "type": "MacOS",
     "color": "red",
-    "leftClick": () => {
-      // Close button clicked
-      qemuProc.kill("SIGKILL");
-      win.close();
-      CatCore.currentProcess.stop();
-    }
+    "leftClick": () => CatCore.currentProcess.stop()
   }]).buttonsStyle("MacOS");
 
   var layer = new CatCore.Graphics.Layer;
@@ -103,9 +98,19 @@ if (!args2.includes("-nographic")) {
   layer.add(vnc);
 
   win.open();
-  // Close window if QEMU process exits
-  qemuProc.on("exit", () => {
+  // Close window and disconnect VNC if current process exits
+  CatCore.currentProcess.on("stop", () => {
     win.close();
-    CatCore.currentProcess.stop();
+    vnc.disconnect();
   });
 }
+
+// If QEMU process exits, stop current process, and vice versa
+qemuProc.on("exit", () => {
+  if (CatCore.currentProcess.state === CatCore.ProcessState.RUNNING) {
+    CatCore.currentProcess.stop();
+  }
+});
+CatCore.currentProcess.on("stop", () => {
+  qemuProc.kill("SIGKILL");
+});
